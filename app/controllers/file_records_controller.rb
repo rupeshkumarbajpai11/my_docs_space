@@ -15,7 +15,8 @@ class FileRecordsController < ApplicationController
     if @file_record.save
       redirect_to file_records_path, notice: "File uploaded successfully."
     else
-      render :new
+      flash.now[:alert] = @file_record.errors.full_messages.to_sentence # Set the flash message
+      render :new, status: :unprocessable_entity
     end
   end
 
