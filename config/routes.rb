@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  devise_for :users, controllers: { registrations: 'users/registrations' }
 
-  # Render dynamic PWA files from app/views/pwa/*
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  resources :file_records do
+    member do
+      patch :share  # To create a shared URL
+    end
+  end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Route to access the file via the shared URL
+  get 'files/:shared_url', to: 'public_files#show', as: 'public_file'
+
+  root to: "file_records#index"
 end
