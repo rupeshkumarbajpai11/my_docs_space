@@ -1,5 +1,5 @@
 class FileRecordsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :set_file_record, only: [:show, :destroy, :share]
 
   def index
 
@@ -21,20 +21,16 @@ class FileRecordsController < ApplicationController
   end
 
   def destroy
-    @file_record = current_user.file_records.find(params[:id])
     @file_record.destroy
     redirect_to file_records_path, notice: "File deleted successfully."
   end
 
   def show
-    file_record = FileRecord.find(params[:id])
-    send_file file_record.file.path, type: file_record.file.content_type, disposition: 'inline'
+    send_file @file_record.file.path, type: @file_record.file.content_type, disposition: 'inline'
   end
-
 
   # Action to create a shared URL
   def share
-    @file_record = current_user.file_records.find(params[:id])
     if @file_record.shared_url.nil?
       @file_record.create_shared_url  # This will create the associated SharedUrl record
     end
@@ -42,6 +38,15 @@ class FileRecordsController < ApplicationController
   end
 
   private
+
+  # Common method to set the file record and handle errors
+  def set_file_record
+    @file_record = current_user.file_records.find_by(id: params[:id])
+    if @file_record.nil?
+      flash[:alert] = "File not found."
+      redirect_to root_path and return
+    end
+  end
 
   def file_record_params
     params.require(:file_record).permit(:title, :description, :file)
