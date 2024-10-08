@@ -5,20 +5,19 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version: 3.3.3
+* Rails version: 7.2.1
+* Database: MySQL
+ 
+Setup Instructions
 
-* System dependencies
+ Install Dependencies
 
-* Configuration
+  bundle install
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
+ Database Setup
+  Install MySQL on your local machine
+  rails db:create
+  rails db:migrate
 
 * ...

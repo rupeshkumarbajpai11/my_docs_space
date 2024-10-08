@@ -1,5 +1,6 @@
 class FileRecordsController < ApplicationController
-  before_action :authenticate_user!, :set_file_record, only: [:show, :destroy, :share]
+  before_action :authenticate_user!
+  before_action :set_file_record, only: [:show, :destroy, :share]
 
   def index
 
