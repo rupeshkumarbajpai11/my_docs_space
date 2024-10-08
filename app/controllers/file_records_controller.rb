@@ -25,6 +25,12 @@ class FileRecordsController < ApplicationController
     redirect_to file_records_path, notice: "File deleted successfully."
   end
 
+  def show
+    file_record = FileRecord.find(params[:id])
+    send_file file_record.file.path, type: file_record.file.content_type, disposition: 'inline'
+  end
+
+
   # Action to create a shared URL
   def share
     @file_record = current_user.file_records.find(params[:id])

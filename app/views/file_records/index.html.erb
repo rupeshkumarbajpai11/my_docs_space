@@ -1,0 +1,70 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Your Uploaded Files</h1>
+  <%= link_to "Upload a New File", new_file_record_path, class: "btn btn-primary mb-3" %>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Actions</th>
+          <th>Shareable Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @file_records.each do |file_record| %>
+          <% if file_record.present? %>
+            <tr>
+              <td>
+                <%= file_record.title %>
+              </td>
+              <td>
+                <textarea class="form-control" rows="1" readonly style="resize: none; overflow-y: auto; max-height: 100px; width: 100%; word-wrap: break-word; text-align: left;">
+                  <%= file_record.description %>
+                </textarea>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <%= link_to file_record_path(file_record), target: "_blank", class: "btn btn-secondary btn-sm me-2 d-inline-flex align-items-center" do %>
+                    <i class="bi bi-eye me-1"></i> Preview
+                  <% end %>
+
+                  <%= button_to file_record_path(file_record), 
+                      method: :delete, 
+                      class: "btn btn-danger btn-sm d-inline-flex align-items-center", 
+                      form: { data: { turbo_confirm: 'Are you sure?' } } do %>
+                    <i class="bi bi-trash me-1"></i> Delete
+                  <% end %>
+                </div>
+              </td>
+              <td>
+                <% if file_record.shared_url.present? %>
+                  <span id="link-<%= file_record.id %>"><%= public_file_url(file_record.shared_url.shared_url) %></span>
+                  <button class="btn btn-outline-secondary btn-sm ms-2" onclick="copyToClipboard('<%= public_file_url(file_record.shared_url.shared_url) %>')">Copy</button>
+                <% else %>
+                  <%= button_to "Create Shareable URL", share_file_record_path(file_record), method: :patch, class: "btn btn-outline-primary btn-sm" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+        <% unless @file_records.present? %>
+          <tr>
+            <td colspan="4" class='text-center'>No Record Found</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('Link copied to clipboard!');
+    }, function(err) {
+      console.error('Could not copy text: ', err);
+    });
+  }
+</script>

@@ -1,6 +1,6 @@
 class FileRecord < ApplicationRecord
   # uploader
-  mount_uploader :my_file, FileUploader
+  mount_uploader :file, FileUploader
 
   # associations
   has_one :shared_url, dependent: :destroy 
@@ -8,7 +8,7 @@ class FileRecord < ApplicationRecord
   
   # validations
   validates :title, presence: true
-  validates :my_file, presence: true
+  validates :file, presence: true
   
 
 end

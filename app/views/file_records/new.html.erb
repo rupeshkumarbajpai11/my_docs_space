@@ -1,0 +1,20 @@
+<%= form_for @file_record, html: { multipart: true } do |f| %>
+  <div class="mb-3">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :file %>
+    <%= f.file_field :file, class: "form-control" %>
+  </div>
+
+  <div>
+    <%= f.submit "Upload File", class: "btn btn-outline-danger me-2" %>
+  </div>
+<% end %>
